@@ -41,6 +41,16 @@ function isRedditShareValid(requestBody) {
         return false;
     }
 
+    const embedUrl = requestBody.embedUrl;
+    if (embedUrl) {
+        try {
+            url = new URL(embedUrl);
+        } catch (err) {
+            console.error('requestUrl is not a valid URL:', embedUrl);
+            return false;
+        }
+    }
+
     return true;
 }
 
