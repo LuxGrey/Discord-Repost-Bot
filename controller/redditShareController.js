@@ -46,9 +46,8 @@ function isRedditShareValid(requestBody) {
 
 async function buildRedditMessage(requestBody) {
     const postUrl = requestBody.postUrl;
-    const postData = await fetchRedditPostData(postUrl);
+    const embedUrl = requestBody.embedUrl;
 
-    const embedUrl = getRedditPostEmbedUrl(postData);
     if (embedUrl) {
         // the reddit post's content is an embed that uses an URL
         // build the message to include the embed URL, as the reddit post itself will not produce a useful embed for Discord
@@ -66,27 +65,6 @@ function buildRxdditUrl(redditPostUrl) {
     const url = new URL(redditPostUrl);
     url.host = url.host.replace('e', 'x');
     return url.toString();
-}
-
-async function fetchRedditPostData(redditPostUrl) {
-    const redditPostJsonUrl = redditPostUrl.slice(0, redditPostUrl.length - 1) + '.json';
-    const response = await fetch(redditPostJsonUrl);
-    const json = await response.json();
-
-    return json[0].data.children[0].data;
-}
-
-/**
- * If the provided reddit post data indicate that the post uses an external embed, return its URL.
- * Otherwise return null.
- */
-function getRedditPostEmbedUrl(redditPostData) {
-    const media = redditPostData.media || redditPostData.secure_media;
-    if (media?.oembed?.provider_name) {
-        return media.oembed.url || redditPostData.url;
-    }
-
-    return null;
 }
 
 /**
