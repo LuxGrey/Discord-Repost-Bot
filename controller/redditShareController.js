@@ -11,7 +11,7 @@ export async function shareRedditPost(req, res) {
     const messageContent = await buildRedditMessage(req.body);
 
     // send the Discord message
-    await sendMessage(process.env.CHANNEL_ID, messageContent);
+    await sendMessage(messageContent);
     res.status(200).send('OK');
 }
 
@@ -69,7 +69,7 @@ function buildRxdditUrl(redditPostUrl) {
 }
 
 async function fetchRedditPostData(redditPostUrl) {
-    const redditPostJsonUrl = redditPostUrl.slice(0, redditPostUrl.length -1) + '.json';
+    const redditPostJsonUrl = redditPostUrl.slice(0, redditPostUrl.length - 1) + '.json';
     const response = await fetch(redditPostJsonUrl);
     const json = await response.json();
 

@@ -1,11 +1,10 @@
-export async function sendMessage(channelId, content) {
+export async function sendMessage(content) {
     const response = await fetch(
-        `https://discord.com/api/channels/${channelId}/messages`,
+        process.env.DISCORD_WEBHOOK_URL,
         {
             method: 'POST',
-            body: JSON.stringify({content: content}),
+            body: JSON.stringify({ content: content }),
             headers: {
-                'Authorization': `Bot ${process.env.BOT_TOKEN}`,
                 'Content-type': 'application/json; charset=UTF-8'
             },
         }
